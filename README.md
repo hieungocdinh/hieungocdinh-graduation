@@ -1,29 +1,51 @@
-# Hieungocdinh graduation
+# hieungocdinh-graduation
 
-## 1. Chạy local
+Thiệp mời dự lễ tốt nghiệp – tĩnh, không cần server, deploy được ngay lên GitHub Pages.
 
-Mở trực tiếp file `index.html` bằng trình duyệt để xem demo.
+---
 
-## 2. Deploy GitHub Pages
+## Cập nhật nội dung
 
-1. Tạo repo tên `hieungocdinh-graduation`.
-2. Push toàn bộ file trong thư mục này lên branch `main`.
-3. Vào `Settings > Pages`.
-4. Chọn `Deploy from branch`.
-5. Chọn branch `main` và thư mục `root`.
-6. Lấy link dạng `https://YOUR_USERNAME.github.io/hieungocdinh-graduation/`.
+Mọi thông tin hiển thị trên thiệp đều nằm trong **block `config`** ở đầu file `script.js`:
 
-## 3. Sau khi deploy
+```js
+const config = {
+  graduateName:  "Đinh Ngọc Hiếu",
+  academicYear:  "Năm học 2021-2026",
+  schoolName:    "Học viện Công nghệ Bưu chính Viễn thông",
+  venueName:     "Hội trường A",
+  date:          "Thứ Bảy, 16.05.2026",
+  time:          "08:30",
+  mapsUrl:       "https://maps.app.goo.gl/...",
+  calendarStart: "20260516T083000",  // YYYYMMDDTHHMMSS
+  calendarEnd:   "20260516T110000",
+  timezone:      "Asia/Ho_Chi_Minh",
+  photoSrc:      "./assets/graduation-hieungocdinh.png",
+};
+```
 
-1. Sửa `og:url` và `og:image` trong `index.html` thành URL thật.
-2. Tạo ảnh `og-hieungocdinh-graduation.jpg` kích thước `1200x630` và đặt vào thư mục `assets/`.
-3. Test preview bằng `Facebook Sharing Debugger` và `Zalo Debug Sharing`.
-4. Nếu Facebook/Zalo cache ảnh cũ, đổi tên ảnh thành `og-hieungocdinh-graduation-v2.jpg` rồi cập nhật lại meta tag tương ứng.
+> Các thẻ Open Graph / Twitter trong `index.html` phải được cập nhật **thủ công** vì crawler của Facebook / Zalo không chạy JavaScript.
 
-## Ghi chú cần sửa nhanh
+---
 
-- `YOUR_USERNAME` trong các meta URL.
-- Tên repo `hieungocdinh-graduation` nếu bạn đổi tên project.
-- Nội dung cá nhân trong `script.js`: tên, trường, ngày giờ, địa điểm.
-- Link ảnh Open Graph trong `index.html` sau khi có ảnh thật.
-- hieu
+## Chạy local
+
+Mở thẳng file `index.html` bằng trình duyệt (hoặc dùng Live Server trong VS Code).
+
+---
+
+## Deploy lên GitHub Pages
+
+1. Tạo repo `hieungocdinh-graduation` (hoặc tên bất kỳ).
+2. Push toàn bộ file lên branch `main`.
+3. Vào **Settings → Pages → Deploy from branch → `main` / `root`**.
+4. GitHub sẽ cấp link dạng `https://<username>.github.io/<repo-name>/`.
+
+---
+
+## Sau khi deploy
+
+1. Cập nhật `og:image` và `twitter:image` trong `index.html` với URL thật của ảnh OG.
+2. Đặt file `og-hieungocdinh-graduation.png` (kích thước **1200 × 630**) vào thư mục `assets/`.
+3. Kiểm tra preview bằng [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) và [Zalo Share Debugger](https://developers.zalo.me/tools/share-validator).
+4. Nếu nền tảng cache ảnh cũ, đổi tên file (ví dụ `...-v2.png`) và cập nhật lại meta tag tương ứng.

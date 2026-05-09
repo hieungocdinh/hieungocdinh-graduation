@@ -1,281 +1,178 @@
-const inviteConfig = {
-  // TODO: sửa [TÊN CỦA TÔI] tại đây.
-  graduateName: "Đinh Ngọc Hiếu",
+// ─── INVITE CONFIGURATION ────────────────────────────────────────────────────
+// Edit this block to update all visible content on the page.
+const config = {
+  // Personal
+  graduateName: "Đinh Ngọc Hiếu",
+  signature: "Hiếu",
+  academicYear: "Năm học 2021-2026",
+  schoolName: "Học viện Công nghệ Bưu chính Viễn thông",
 
-  // TODO: sửa tiêu đề hiển thị nếu bạn muốn đổi nội dung thiệp.
-  mainTitle: "Thiệp mời dự lễ tốt nghiệp",
-  subTitle: "Trân trọng mời bạn đến chung vui trong ngày tốt nghiệp của tôi",
+  // Event
+  venueName: "Hội trường A2",
+  date: "Thứ Bảy, 23.05.2026",
+  time: "09:00",
+  mapsUrl: "https://maps.app.goo.gl/64Fqv3pnPEsDey8f6",
 
-  // TODO: sửa [Tên trường] tại đây.
-  schoolName: "Học viện Công nghệ Bưu chính Viễn thông",
-
-  // TODO: sửa địa điểm tổ chức tại đây.
-  venueName: "Hội trường A",
-
-  // TODO: sửa địa chỉ thật tại đây.
-  addressLabel: "km10, Đường Nguyễn Trãi, P. Mộ Lao, Quận Hà Đông, Hà Nội",
-
-  // TODO: sửa ngày giờ hiển thị tại đây.
-  dateLabel: "Chủ nhật, 15 tháng 06 năm 2026",
-  timeLabel: "08:00",
-
-  // TODO: sửa ngày giờ Google Calendar tại đây theo định dạng YYYYMMDDTHHMMSS.
-  calendarStart: "20260615T080000",
-  calendarEnd: "20260615T110000",
+  // Google Calendar (format: YYYYMMDDTHHMMSS)
+  calendarStart: "20260523T090000",
+  calendarEnd: "20260523T110000",
   timezone: "Asia/Ho_Chi_Minh",
 
-  invitationText:
-    "Sau một hành trình nhiều kỷ niệm, tôi rất vui khi được mời bạn đến dự lễ tốt nghiệp và cùng lưu lại những khoảnh khắc đáng nhớ trong ngày đặc biệt này.",
+  // Photo
+  photoSrc: "./assets/graduation-hieungocdinh.png",
+};
+// ─────────────────────────────────────────────────────────────────────────────
 
-  // TODO: sửa chữ ký hiển thị tại đây.
-  signature: "Hiếu",
-
-  mapsUrl: "https://maps.app.goo.gl/64Fqv3pnPEsDey8f6",
+// Derived / computed values (do not edit)
+const data = {
+  ...config,
+  graduateNameUpper: config.graduateName.toLocaleUpperCase("vi-VN"),
+  schoolNameUpper: config.schoolName.toLocaleUpperCase("vi-VN"),
+  calendarTitle: `Lễ tốt nghiệp của ${config.graduateName}`,
+  calendarDetails: `Trân trọng mời bạn đến dự lễ tốt nghiệp và cùng lưu lại những khoảnh khắc đáng nhớ trong ngày đặc biệt này.`,
+  venueFull: `${config.venueName}, ${config.schoolName}`,
 };
 
-const storageKey = "graduationInviteWishesDemo";
-
-inviteConfig.venueFull = `${inviteConfig.venueName}, Trường ${inviteConfig.schoolName}`;
-inviteConfig.calendarTitle = `Lễ tốt nghiệp của ${inviteConfig.graduateName}`;
-inviteConfig.calendarDetails = `${inviteConfig.subTitle}\n\n${inviteConfig.invitationText}`;
-
-function bindInviteContent() {
-  document.title = `${inviteConfig.mainTitle} | ${inviteConfig.graduateName}`;
+// ─── DOM BINDINGS ─────────────────────────────────────────────────────────────
+function bindContent() {
+  document.title = `Thiệp mời dự lễ tốt nghiệp | ${data.graduateName}`;
 
   const bindings = {
-    mainTitle: inviteConfig.mainTitle,
-    graduateName: inviteConfig.graduateName,
-    subTitle: inviteConfig.subTitle,
-    dateLabel: inviteConfig.dateLabel,
-    timeLabel: inviteConfig.timeLabel,
-    venueFull: inviteConfig.venueFull,
-    addressLabel: inviteConfig.addressLabel,
-    invitationText: `“${inviteConfig.invitationText}”`,
-    signature: inviteConfig.signature,
+    posterEyebrow: "Trân trọng mời bạn",
+    titleLine: "Buổi lễ",
+    scriptTitle: "Tốt nghiệp",
+    graduateNameUpper: data.graduateNameUpper,
+    schoolNameUpper: data.schoolNameUpper,
+    sideLabelLeft: data.academicYear,
+    sideLabelRight: data.graduateNameUpper,
+    detailTimeLabel: "Ngày & giờ",
+    dateCompact: data.date,
+    timeLabel: data.time,
+    addCalendarLabel: "+ Thêm vào lịch",
+    detailPlaceLabel: "Địa điểm",
+    venueName: data.venueName,
+    schoolName: data.schoolName,
+    mapLinkLabel: "Google map",
+    mainTitle: "Thiệp mời dự lễ tốt nghiệp",
+    subTitle: ``,
+    invitationText: data.calendarDetails,
+    invitationSignaturePrefix: "Thân mời,",
+    signature: data.signature,
+    footerLine: "Hẹn gặp bạn trong ngày tốt nghiệp của tôi.",
+    footerSubline: "From hieungocdinh with love ♥️",
   };
 
-  document.querySelectorAll("[data-bind]").forEach((element) => {
-    const key = element.dataset.bind;
-
+  document.querySelectorAll("[data-bind]").forEach((el) => {
+    const key = el.dataset.bind;
     if (Object.prototype.hasOwnProperty.call(bindings, key)) {
-      element.textContent = bindings[key];
+      el.textContent = bindings[key];
     }
   });
+
+  const photo = document.getElementById("poster-photo");
+  if (photo) {
+    photo.src = data.photoSrc;
+    photo.alt = `Ảnh minh họa tốt nghiệp của ${data.graduateName}`;
+  }
 }
 
-function setupSmoothScroll() {
-  const trigger = document.getElementById("scroll-to-invite");
-  const target = document.getElementById("event-info");
-
-  if (!trigger || !target) {
-    return;
+// ─── EXTERNAL LINKS ───────────────────────────────────────────────────────────
+function buildLinks() {
+  const calendarLink = document.getElementById("calendar-link");
+  if (calendarLink) {
+    const url = new URL("https://calendar.google.com/calendar/render");
+    url.searchParams.set("action", "TEMPLATE");
+    url.searchParams.set("text", data.calendarTitle);
+    url.searchParams.set("dates", `${data.calendarStart}/${data.calendarEnd}`);
+    url.searchParams.set("details", data.calendarDetails);
+    url.searchParams.set("location", data.venueFull);
+    url.searchParams.set("ctz", data.timezone);
+    calendarLink.href = url.toString();
   }
 
-  trigger.addEventListener("click", (event) => {
-    event.preventDefault();
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+  const mapsLink = document.getElementById("maps-link");
+  if (mapsLink) mapsLink.href = data.mapsUrl;
 }
 
-function setupRevealAnimation() {
-  const revealElements = document.querySelectorAll("[data-reveal]");
-
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+function setupReveal() {
+  const elements = document.querySelectorAll("[data-reveal]");
   if (!("IntersectionObserver" in window)) {
-    revealElements.forEach((element) => element.classList.add("is-visible"));
+    elements.forEach((el) => el.classList.add("is-visible"));
     return;
   }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
+        if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
         observer.unobserve(entry.target);
       });
     },
-    {
-      threshold: 0.18,
-      rootMargin: "0px 0px -40px 0px",
-    }
+    { threshold: 0.18, rootMargin: "0px 0px -40px 0px" }
   );
 
-  revealElements.forEach((element) => observer.observe(element));
+  elements.forEach((el) => observer.observe(el));
 }
 
-function buildCalendarLink() {
-  const calendarUrl = new URL("https://calendar.google.com/calendar/render");
-  const fullLocation = `${inviteConfig.venueFull}, ${inviteConfig.addressLabel}`;
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+function launchConfetti() {
+  const layer = document.getElementById("confetti-layer");
+  if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  calendarUrl.searchParams.set("action", "TEMPLATE");
-  calendarUrl.searchParams.set("text", inviteConfig.calendarTitle);
-  calendarUrl.searchParams.set("dates", `${inviteConfig.calendarStart}/${inviteConfig.calendarEnd}`);
-  calendarUrl.searchParams.set("details", inviteConfig.calendarDetails);
-  calendarUrl.searchParams.set("location", fullLocation);
-  calendarUrl.searchParams.set("ctz", inviteConfig.timezone);
+  const colors = ["#d8b07a", "#e8d6bb", "#cfc5e6", "#f3e6d1"];
 
-  const calendarLink = document.getElementById("calendar-link");
-  const mapsLink = document.getElementById("maps-link");
+  ["left", "right"].forEach((side) => {
+    for (let i = 0; i < 30; i++) {
+      const piece = document.createElement("span");
+      const travelX = Math.random() * 18 + 48;
 
-  if (calendarLink) {
-    calendarLink.href = calendarUrl.toString();
-  }
+      piece.className = `confetti-piece confetti-piece--${side}`;
+      piece.style.setProperty("--piece-color", colors[i % colors.length]);
+      piece.style.setProperty("--origin-y", `${Math.random() * 18 + 4}vh`);
+      piece.style.setProperty("--travel-x", side === "left" ? `${travelX}vw` : `-${travelX}vw`);
+      piece.style.setProperty("--travel-y", `${Math.random() * 30 + 30}vh`);
+      piece.style.setProperty("--rotate", `${Math.random() * 260 + 140}deg`);
+      piece.style.setProperty("--duration", `${Math.random() * 1400 + 4200}ms`);
+      piece.style.setProperty("--delay", `${Math.random() * 800}ms`);
+      piece.style.setProperty("--size", `${Math.random() * 4 + 6}px`);
 
-  if (mapsLink) {
-    mapsLink.href = inviteConfig.mapsUrl;
-  }
-}
-
-function loadWishes() {
-  try {
-    const rawData = localStorage.getItem(storageKey);
-    const parsedData = rawData ? JSON.parse(rawData) : [];
-
-    return Array.isArray(parsedData) ? parsedData : [];
-  } catch (error) {
-    return [];
-  }
-}
-
-function saveWishes(wishes) {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(wishes));
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-function formatWishTime(createdAt) {
-  const date = new Date(createdAt);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Vừa ghi nhận";
-  }
-
-  return new Intl.DateTimeFormat("vi-VN", {
-    dateStyle: "short",
-    timeStyle: "short",
-  }).format(date);
-}
-
-function renderWishes(wishes) {
-  const wishesList = document.getElementById("wishes-list");
-  const emptyState = document.getElementById("wishes-empty");
-  const clearButton = document.getElementById("clear-wishes");
-
-  if (!wishesList || !emptyState || !clearButton) {
-    return;
-  }
-
-  wishesList.innerHTML = "";
-
-  if (wishes.length === 0) {
-    emptyState.hidden = false;
-    clearButton.disabled = true;
-    return;
-  }
-
-  emptyState.hidden = true;
-  clearButton.disabled = false;
-
-  wishes
-    .slice()
-    .reverse()
-    .forEach((wish) => {
-      const item = document.createElement("article");
-      item.className = "wish-item";
-
-      const guestName = document.createElement("h4");
-      guestName.textContent = wish.name;
-
-      const message = document.createElement("p");
-      message.textContent = wish.message || "Một lời chúc ngắn gọn nhưng rất đáng quý.";
-
-      const time = document.createElement("span");
-      time.className = "wish-item__time";
-      time.textContent = formatWishTime(wish.createdAt);
-
-      item.append(guestName, message, time);
-      wishesList.appendChild(item);
-    });
-}
-
-function setFormStatus(message, isError = false) {
-  const statusElement = document.getElementById("form-status");
-
-  if (!statusElement) {
-    return;
-  }
-
-  statusElement.textContent = message;
-  statusElement.style.color = isError ? "#b33a3a" : "";
-}
-
-function setupWishForm() {
-  const form = document.getElementById("wish-form");
-  const nameInput = document.getElementById("guest-name");
-  const messageInput = document.getElementById("guest-message");
-  const clearButton = document.getElementById("clear-wishes");
-
-  if (!form || !nameInput || !messageInput || !clearButton) {
-    return;
-  }
-
-  let wishes = loadWishes();
-  renderWishes(wishes);
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const guestName = nameInput.value.trim();
-    const guestMessage = messageInput.value.trim();
-
-    if (!guestName) {
-      setFormStatus("Vui lòng nhập tên khách mời trước khi gửi lời chúc.", true);
-      nameInput.focus();
-      return;
+      piece.addEventListener("animationend", () => piece.remove(), { once: true });
+      layer.appendChild(piece);
     }
-
-    wishes.push({
-      name: guestName,
-      message: guestMessage,
-      createdAt: new Date().toISOString(),
-    });
-
-    const isSaved = saveWishes(wishes);
-
-    if (!isSaved) {
-      wishes.pop();
-      setFormStatus("Trình duyệt đang chặn lưu demo. Hãy thử lại sau.", true);
-      return;
-    }
-
-    renderWishes(wishes);
-    form.reset();
-    setFormStatus("Cảm ơn bạn, lời chúc đã được ghi nhận trong bản demo.");
-  });
-
-  clearButton.addEventListener("click", () => {
-    try {
-      localStorage.removeItem(storageKey);
-    } catch (error) {
-      setFormStatus("Không thể xóa lời chúc demo trên trình duyệt này.", true);
-      return;
-    }
-
-    wishes = [];
-    renderWishes(wishes);
-    setFormStatus("Đã xóa toàn bộ lời chúc demo trên trình duyệt này.");
   });
 }
 
+// ─── ENVELOPE OPEN INTERACTION ────────────────────────────────────────────────
+function setupEnvelope() {
+  const envelope = document.getElementById("envelope-overlay");
+
+  if (!envelope) {
+    // No envelope in DOM – reveal the card immediately
+    document.body.classList.add("is-opened");
+    launchConfetti();
+    return;
+  }
+
+  envelope.addEventListener("click", () => {
+    if (envelope.classList.contains("is-open")) return;
+
+    envelope.classList.add("is-open");
+
+    setTimeout(() => {
+      document.body.classList.add("is-opened");
+      envelope.classList.add("is-hidden");
+      launchConfetti();
+      setTimeout(() => envelope.remove(), 1500);
+    }, 1600);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  bindInviteContent();
-  setupSmoothScroll();
-  setupRevealAnimation();
-  buildCalendarLink();
-  setupWishForm();
+  bindContent();
+  buildLinks();
+  setupReveal();
+  setupEnvelope();
 });
